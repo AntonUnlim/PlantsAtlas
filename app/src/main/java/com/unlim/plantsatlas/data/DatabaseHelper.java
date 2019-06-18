@@ -13,16 +13,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class DatabeseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DB_PATH;
     private static String DB_NAME = "db.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     private Context context;
     private SQLiteDatabase db;
     private boolean isNeedToUpdate = false;
 
-    public DatabeseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         this.context = context;
         if (Build.VERSION.SDK_INT >= 24) {

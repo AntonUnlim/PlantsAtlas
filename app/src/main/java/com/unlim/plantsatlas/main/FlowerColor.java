@@ -13,7 +13,7 @@ public class FlowerColor {
         this.color = Color.rgb(red,green,blue);
     }
 
-    private int getId() {
+    public int getId() {
         return id;
     }
 
@@ -25,4 +25,8 @@ public class FlowerColor {
         return color;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }
