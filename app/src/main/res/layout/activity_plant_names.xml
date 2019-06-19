@@ -5,19 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.PlantNamesActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/background">
 
     <TextView
         android:id="@+id/plant_names_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" />
+        style="@style/TextViewTitleStyle" />
 
     <EditText
         android:id="@+id/plant_names_search_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Поиск..." />
+        style="@style/EditTextSearchStyle"/>
     <ListView
         android:id="@+id/plant_names_list"
         android:layout_width="match_parent"

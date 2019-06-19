@@ -2,7 +2,11 @@ package com.unlim.plantsatlas.main;
 
 import android.graphics.Color;
 
-public class FlowerColor {
+import com.unlim.plantsatlas.data.Listable;
+
+import java.io.Serializable;
+
+public class FlowerColor implements Serializable, Listable {
     private int id;
     private String name;
     private int color;
@@ -28,5 +32,25 @@ public class FlowerColor {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public Listable clone() {
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof FlowerColor)) {
+            return false;
+        }
+
+        FlowerColor fc = (FlowerColor) obj;
+
+        return fc.getId() == ((FlowerColor) obj).getId();
     }
 }

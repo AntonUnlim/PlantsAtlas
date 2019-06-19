@@ -8,4 +8,22 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextViewTitleStyle">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/mainTextColor</item>
+    </style>
+
+    <style name="EditTextSearchStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/mainTextColor</item>
+        <item name="android:textColorHint">@color/hintTextColor</item>
+        <item name="android:hint">Поиск...</item>
+    </style>
+
 </resources>

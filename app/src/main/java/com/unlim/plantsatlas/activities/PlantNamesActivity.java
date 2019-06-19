@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,9 +14,9 @@ import android.widget.Toast;
 import com.unlim.plantsatlas.R;
 import com.unlim.plantsatlas.data.Const;
 import com.unlim.plantsatlas.data.Database;
+import com.unlim.plantsatlas.data.Listable;
 import com.unlim.plantsatlas.main.Plant;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class PlantNamesActivity extends AppCompatActivity {
@@ -25,8 +24,10 @@ public class PlantNamesActivity extends AppCompatActivity {
     private ListView plantNamesList;
     private EditText editTextSearch;
     private TextView title;
-    private List<Plant> plants;
+    private List<Listable> plants;
     private boolean isRusNames;
+    private boolean isFullPlantList;
+    private ListViewAdapterWithFilter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,14 @@ public class PlantNamesActivity extends AppCompatActivity {
         plantNamesList = (ListView)findViewById(R.id.plant_names_list);
         editTextSearch = (EditText)findViewById(R.id.plant_names_search_text);
         title = (TextView)findViewById(R.id.plant_names_title);
-        plants = Database.getPlants();
+
+        String fromIntent = getIntent().getStringExtra(Const.INTENT_CATEGORY_LIST_FOR_PLANTS);
+        isFullPlantList = (fromIntent == null || fromIntent.equals(""));
+
+        fillPlants();
+
+        isRusNames = getIntent().getBooleanExtra(Const.INTENT_IS_RUS_NAMES, true);
+        title.setText((isRusNames)?"Русские названия":"Латинские названия");
 
         TextWatcher searchWatcher = new TextWatcher() {
             @Override
@@ -55,7 +63,7 @@ public class PlantNamesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Plant selectedPlant = (Plant)view.getTag();
-                Toast t = Toast.makeText(PlantNamesActivity.this, (isRusNames)?selectedPlant.getRusName():selectedPlant.getLatName(), Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(PlantNamesActivity.this, selectedPlant.getName(), Toast.LENGTH_SHORT);
                 t.show();
             }
         });
@@ -63,22 +71,21 @@ public class PlantNamesActivity extends AppCompatActivity {
 
     protected void onResume(){
         super.onResume();
+        adapter = new ListViewAdapterWithFilter(this, plants);
         fillListOfPlants("");
         editTextSearch.setText("");
     }
 
     private void fillListOfPlants(CharSequence searchString) {
-        isRusNames = getIntent().getBooleanExtra(Const.INTENT_IS_RUS_NAMES, true);
-        title.setText((isRusNames)?"Русские названия":"Латинские названия");
-        String[] plantNames = new String[plants.size()];
-        for (int i = 0; i < plants.size(); i++) {
-            plantNames[i] = (isRusNames) ? plants.get(i).getRusName() : plants.get(i).getLatName();
-        }
-        Arrays.sort(plantNames);
-        PlantNameAdapter adapter = new PlantNameAdapter(this, plants, isRusNames);
         adapter.getFilter().filter(searchString);
         plantNamesList.setAdapter(adapter);
+    }
 
-
+    private void fillPlants() {
+        if (isFullPlantList) {
+            plants = Database.getPlants();
+        } else {
+            plants = Database.getNotFullPlants();
+        }
     }
 }

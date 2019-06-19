@@ -5,22 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.CategoryListActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/background">
 
     <TextView
         android:id="@+id/category_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" />
+        style="@style/TextViewTitleStyle" />
 
     <EditText
         android:id="@+id/category_search_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/EditTextSearchStyle"
         android:hint="Поиск..." />
     <ListView
         android:id="@+id/category_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
     </ListView>
 </LinearLayout>

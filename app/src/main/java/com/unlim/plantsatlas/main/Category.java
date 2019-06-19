@@ -1,6 +1,8 @@
 package com.unlim.plantsatlas.main;
 
-public abstract class Category {
+import java.io.Serializable;
+
+public abstract class Category implements Serializable {
     private int id;
     private String name;
     private String imageFile;
@@ -27,4 +29,5 @@ public abstract class Category {
     public String toString() {
         return name;
     }
+
 }
