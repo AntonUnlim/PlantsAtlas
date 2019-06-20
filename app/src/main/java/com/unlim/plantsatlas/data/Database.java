@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
+    private static Cursor cursor;
+
     private static List<Listable> families;
     private static List<Listable> flowerColors;
     private static List<Listable> habitats;
@@ -49,181 +51,105 @@ public class Database {
 
     private static void fillFamilies(SQLiteDatabase db) {
         families = new ArrayList<>();
-        String query = "SELECT _id, " +
-                "RusName, " +
-                "LatName " +
-                "FROM Family " +
-                "ORDER BY RusName";
-        Cursor cursor = db.rawQuery(query, null);
+        cursor = db.rawQuery(SqlQuery.family, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            int id = cursor.getInt(0);
-            String rusName = cursor.getString(1);
-            String latName = cursor.getString(2);
-            families.add(new Family(id, rusName, latName));
+            families.add(new Family(
+                    getIntFromDB("_id"),
+                    getStrFromDB("RusName"),
+                    getStrFromDB("LatName")));
             cursor.moveToNext();
         }
         cursor.close();
     }
     private static void fillFlowerColors(SQLiteDatabase db) {
         flowerColors = new ArrayList<>();
-        String query = "SELECT _id, " +
-                "Name, " +
-                "IFNULL(Red, 255) AS Red, " +
-                "IFNULL(Green, 255) AS Green, " +
-                "IFNULL(Blue, 255) AS Blue " +
-                "FROM FlowerColor ORDER BY \"Order\"";
-        Cursor cursor = db.rawQuery(query, null);
+        cursor = db.rawQuery(SqlQuery.flowerColor, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            int red = cursor.getInt(2);
-            int green = cursor.getInt(3);
-            int blue = cursor.getInt(4);
-            flowerColors.add(new FlowerColor(id, name, red, green, blue));
+            flowerColors.add(new FlowerColor(
+                    getIntFromDB("_id"),
+                    getStrFromDB("Name"),
+                    getIntFromDB("Red"),
+                    getIntFromDB("Green"),
+                    getIntFromDB("Blue")));
             cursor.moveToNext();
         }
         cursor.close();
     }
     private static void fillHabitats(SQLiteDatabase db) {
         habitats = new ArrayList<>();
-        String query = "SELECT _id, " +
-                "Name, " +
-                "Image " +
-                "FROM Habitat " +
-                "ORDER BY \"Order\"";
-        Cursor cursor = db.rawQuery(query, null);
+        cursor = db.rawQuery(SqlQuery.habitat, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String imageFile = cursor.getString(2);
-            habitats.add(new Habitat(id, name, imageFile));
+            habitats.add(new Habitat(
+                    getIntFromDB("_id"),
+                    getStrFromDB("Name"),
+                    getStrFromDB("Image")));
             cursor.moveToNext();
         }
         cursor.close();
     }
     private static void fillLifeForms(SQLiteDatabase db) {
         lifeForms = new ArrayList<>();
-        String query = "SELECT _id, " +
-                "Name, " +
-                "Image " +
-                "FROM LifeForm " +
-                "ORDER BY \"Order\"";
-        Cursor cursor = db.rawQuery(query, null);
+        cursor = db.rawQuery(SqlQuery.lifeForm, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String imageFile = cursor.getString(2);
-            lifeForms.add(new LifeForm(id, name, imageFile));
+            lifeForms.add(new LifeForm(
+                    getIntFromDB("_id"),
+                    getStrFromDB("Name"),
+                    getStrFromDB("Image")));
             cursor.moveToNext();
         }
         cursor.close();
     }
     private static void fillValues(SQLiteDatabase db) {
         values = new ArrayList<>();
-        String query = "SELECT _id, " +
-                "Name, " +
-                "Image " +
-                "FROM Value " +
-                "ORDER BY \"Order\"";
-        Cursor cursor = db.rawQuery(query, null);
+        cursor = db.rawQuery(SqlQuery.value, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String imageFile = cursor.getString(2);
-            values.add(new Value(id, name, imageFile));
+            values.add(new Value(
+                    getIntFromDB("_id"),
+                    getStrFromDB("Name"),
+                    getStrFromDB("Image")));
             cursor.moveToNext();
         }
         cursor.close();
     }
     private static void fillPlants(SQLiteDatabase db) {
         plants = new ArrayList<>();
-        String mainQuery = "SELECT " +
-                "p._id, " +
-                "p.RusName, " +
-                "p.LatName, " +
-                "p.Author, " +
-                "p.Family, " +
-                "IFNULL(p.LifeForm, 0) AS LifeForm, " +
-                "p.EndangeredListSaratov, " +
-                "p.EndangeredListRussia, " +
-                "IFNULL(p.FlowerColor, 0) AS FlowerColor, " +
-                "pt.Text, " +
-                "ph.fileName AS PhotoFileName " +
-                "FROM Plant p " +
-                "JOIN PlantText pt ON p._id = pt.idPlant " +
-                "LEFT JOIN PlantPhoto pp ON p._id = pp.idPlant AND pp.isMainPhoto = 1 " +
-                "LEFT JOIN Photo ph ON pp.idPhoto = ph._id " +
-                "ORDER BY p.RusName";
-        Cursor mainCursor = db.rawQuery(mainQuery, null);
-        mainCursor.moveToFirst();
-        while (!mainCursor.isAfterLast()) {
-            int id = mainCursor.getInt(mainCursor.getColumnIndex("_id"));
-            String rusName = mainCursor.getString(mainCursor.getColumnIndex("RusName"));
-            String latName = mainCursor.getString(mainCursor.getColumnIndex("LatName"));
-            String author = mainCursor.getString(mainCursor.getColumnIndex("Author"));
-            int idFamily = mainCursor.getInt(mainCursor.getColumnIndex("Family"));
-            int idLifeForm = mainCursor.getInt(mainCursor.getColumnIndex("LifeForm"));
-            boolean isEndangeredListSaratov = mainCursor.getInt(mainCursor.getColumnIndex("EndangeredListSaratov")) == 1;
-            boolean isEndangeredListRussia = mainCursor.getInt(mainCursor.getColumnIndex("EndangeredListRussia")) == 1;
-            int idFlowerColor = mainCursor.getInt(mainCursor.getColumnIndex("FlowerColor"));
-            String text = mainCursor.getString(mainCursor.getColumnIndex("Text"));
-            String mainPhotoFileName = mainCursor.isNull(
-                    mainCursor.getColumnIndex("PhotoFileName")) ?
-                    null : mainCursor.getString(mainCursor.getColumnIndex("PhotoFileName"));
+        cursor = db.rawQuery(SqlQuery.plantMain, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            int id = getIntFromDB("_id");
+            String mainPhotoFileName = cursor.isNull(
+                    cursor.getColumnIndex("PhotoFileName")) ?
+                    null : cursor.getString(cursor.getColumnIndex("PhotoFileName"));
 
-            String valueQuery = "SELECT idValue FROM PlantValue WHERE idPlant = " + id;
-            Cursor valueCursor = db.rawQuery(valueQuery, null);
-            valueCursor.moveToFirst();
-            List<Value> values = new ArrayList<>();
-            while (!valueCursor.isAfterLast()) {
-                int idValue = valueCursor.getInt(valueCursor.getColumnIndex("idValue"));
-                values.add(getValueById(idValue));
-                valueCursor.moveToNext();
-            }
-            valueCursor.close();
-
-            String photoQuery = "SELECT p.fileName FROM PlantPhoto pp JOIN Photo p ON pp.idPhoto = p._id WHERE isMainPhoto = 0 AND idPlant = " + id;
-            Cursor photoCursor = db.rawQuery(photoQuery, null);
-            photoCursor.moveToFirst();
-            List<String> additionalPhotos = new ArrayList<>();
-            while (!photoCursor.isAfterLast()) {
-                String fileName = photoCursor.getString(photoCursor.getColumnIndex("fileName"));
-                additionalPhotos.add(fileName);
-                photoCursor.moveToNext();
-            }
-            photoCursor.close();
-
-            String habitatQuery = "SELECT idHabitat FROM PlantHabitat WHERE idPlant = " + id;
-            Cursor habitatCursor = db.rawQuery(habitatQuery, null);
-            habitatCursor.moveToFirst();
-            List<Habitat> habitats = new ArrayList<>();
-            while (!habitatCursor.isAfterLast()) {
-                int idHabitat = habitatCursor.getInt(habitatCursor.getColumnIndex("idHabitat"));
-                habitats.add(getHabitatById(idHabitat));
-                habitatCursor.moveToNext();
-            }
-            habitatCursor.close();
-
-            plants.add(new Plant(id, rusName, latName, author, getFamilyById(idFamily), getLifeFormById(idLifeForm),
-                    habitats, values, isEndangeredListSaratov, isEndangeredListRussia,
-                    getFlowerColorById(idFlowerColor), mainPhotoFileName, additionalPhotos, text));
-            mainCursor.moveToNext();
+            plants.add(new Plant(
+                    id,
+                    getStrFromDB("RusName"),
+                    getStrFromDB("LatName"),
+                    getStrFromDB("Author"),
+                    getFamilyById(getIntFromDB("Family")),
+                    getLifeFormById(getIntFromDB("LifeForm")),
+                    getPlantHabitats(db, id),
+                    getPlantValuesFromDB(db, id),
+                    getIntFromDB("EndangeredListSaratov") == 1,
+                    getIntFromDB("EndangeredListRussia") == 1,
+                    getFlowerColorById(getIntFromDB("FlowerColor")),
+                    mainPhotoFileName,
+                    getPlantAdditionalPhotos(db, id),
+                    getStrFromDB("Text")
+                    )
+            );
+            cursor.moveToNext();
         }
-        mainCursor.close();
+        cursor.close();
     }
     private static void fillSections(SQLiteDatabase db) throws ClassNotFoundException {
         sections = new ArrayList<>();
-        String query = "SELECT _id, " +
-                "Name, " +
-                "ClassName " +
-                "FROM Section " +
-                "ORDER BY \"Order\"";
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(SqlQuery.section, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             int id = cursor.getInt(cursor.getColumnIndex("_id"));
@@ -238,6 +164,50 @@ public class Database {
         endangeredLists = new ArrayList<>();
         endangeredLists.add(new EndangeredList(1, "Красная книга Саратовской области", ""));
         endangeredLists.add(new EndangeredList(2, "Красная книга РФ", ""));
+    }
+
+    private static List<Value> getPlantValuesFromDB(SQLiteDatabase db, int id) {
+        Cursor valueCursor = db.rawQuery(SqlQuery.plantValue + id, null);
+        valueCursor.moveToFirst();
+        List<Value> values = new ArrayList<>();
+        while (!valueCursor.isAfterLast()) {
+            int idValue = valueCursor.getInt(valueCursor.getColumnIndex("idValue"));
+            values.add(getValueById(idValue));
+            valueCursor.moveToNext();
+        }
+        valueCursor.close();
+        return values;
+    }
+    private static List<String> getPlantAdditionalPhotos(SQLiteDatabase db, int id) {
+        Cursor photoCursor = db.rawQuery(SqlQuery.plantPhoto + id, null);
+        photoCursor.moveToFirst();
+        List<String> additionalPhotos = new ArrayList<>();
+        while (!photoCursor.isAfterLast()) {
+            String fileName = photoCursor.getString(photoCursor.getColumnIndex("fileName"));
+            additionalPhotos.add(fileName);
+            photoCursor.moveToNext();
+        }
+        photoCursor.close();
+        return additionalPhotos;
+    }
+    private static List<Habitat> getPlantHabitats(SQLiteDatabase db, int id) {
+        Cursor habitatCursor = db.rawQuery(SqlQuery.plantHabitat + id, null);
+        habitatCursor.moveToFirst();
+        List<Habitat> habitats = new ArrayList<>();
+        while (!habitatCursor.isAfterLast()) {
+            int idHabitat = habitatCursor.getInt(habitatCursor.getColumnIndex("idHabitat"));
+            habitats.add(getHabitatById(idHabitat));
+            habitatCursor.moveToNext();
+        }
+        habitatCursor.close();
+        return habitats;
+    }
+
+    private static int getIntFromDB(String fieldName) {
+        return cursor.getInt(cursor.getColumnIndex(fieldName));
+    }
+    private static String getStrFromDB(String fieldName) {
+        return cursor.getString(cursor.getColumnIndex(fieldName));
     }
 
     public static Family getFamilyById(int id) {
