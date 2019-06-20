@@ -26,33 +26,15 @@ public class Database {
     private static List<Listable> sections;
     private static List<Listable> endangeredLists;
 
-    public static List<Listable> getFamilies() {
-        return families;
-    }
-    public static List<Listable> getFlowerColors() {
-        return flowerColors;
-    }
-    public static List<Listable> getHabitats() {
-        return habitats;
-    }
-    public static List<Listable> getLifeForms() {
-        return lifeForms;
-    }
-    public static List<Listable> getValues() {
-        return values;
-    }
-    public static List<Listable> getPlants() {
-        return plants;
-    }
-    public static List<Listable> getSections() {
-        return sections;
-    }
-    public static List<Listable> getEndangeredLists() {
-        return endangeredLists;
-    }
-    public static List<Listable> getNotFullPlants() {
-        return notFullPlants;
-    }
+    public static List<Listable> getFamilies() { return families; }
+    public static List<Listable> getFlowerColors() { return flowerColors; }
+    public static List<Listable> getHabitats() { return habitats; }
+    public static List<Listable> getLifeForms() { return lifeForms; }
+    public static List<Listable> getValues() { return values; }
+    public static List<Listable> getPlants() { return plants; }
+    public static List<Listable> getSections() { return sections; }
+    public static List<Listable> getEndangeredLists() { return endangeredLists; }
+    public static List<Listable> getNotFullPlants() { return notFullPlants; }
 
     public static void fillMainData(SQLiteDatabase db) throws ClassNotFoundException {
         fillSections(db);
