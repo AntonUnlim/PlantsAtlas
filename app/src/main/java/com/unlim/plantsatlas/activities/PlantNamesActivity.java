@@ -21,12 +21,11 @@ import java.util.List;
 
 public class PlantNamesActivity extends AppCompatActivity {
 
-    private ListView plantNamesList;
-    private EditText editTextSearch;
-    private TextView title;
+    private ListView plantsListView;
+    private EditText searchEditText;
+    private TextView titleTextView;
     private List<Listable> plants;
-    private boolean isRusNames;
-    private boolean isFullPlantList;
+    private boolean isLatNames = false;
     private ListViewAdapterWithFilter adapter;
 
     @Override
@@ -34,17 +33,14 @@ public class PlantNamesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_names);
 
-        plantNamesList = (ListView)findViewById(R.id.plant_names_list);
-        editTextSearch = (EditText)findViewById(R.id.plant_names_search_text);
-        title = (TextView)findViewById(R.id.plant_names_title);
+        plantsListView = (ListView)findViewById(R.id.plant_names_list);
+        searchEditText = (EditText)findViewById(R.id.plant_names_search_text);
+        titleTextView = (TextView)findViewById(R.id.plant_names_title);
 
-        String fromIntent = getIntent().getStringExtra(Const.INTENT_CATEGORY_LIST_FOR_PLANTS);
-        isFullPlantList = (fromIntent == null || fromIntent.equals(""));
+        plants = Database.getPlants();
 
-        fillPlants();
-
-        isRusNames = getIntent().getBooleanExtra(Const.INTENT_IS_RUS_NAMES, true);
-        title.setText((isRusNames)?"Русские названия":"Латинские названия");
+        isLatNames = getIntent().getBooleanExtra(Const.INTENT_IS_LAT_NAMES, false);
+        titleTextView.setText((isLatNames)?"Латинские названия":"Русские названия");
 
         TextWatcher searchWatcher = new TextWatcher() {
             @Override
@@ -57,9 +53,9 @@ public class PlantNamesActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) { }
         };
-        editTextSearch.addTextChangedListener(searchWatcher);
+        searchEditText.addTextChangedListener(searchWatcher);
 
-        plantNamesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        plantsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Plant selectedPlant = (Plant)view.getTag();
@@ -73,19 +69,11 @@ public class PlantNamesActivity extends AppCompatActivity {
         super.onResume();
         adapter = new ListViewAdapterWithFilter(this, plants);
         fillListOfPlants("");
-        editTextSearch.setText("");
+        searchEditText.setText("");
     }
 
     private void fillListOfPlants(CharSequence searchString) {
         adapter.getFilter().filter(searchString);
-        plantNamesList.setAdapter(adapter);
-    }
-
-    private void fillPlants() {
-        if (isFullPlantList) {
-            plants = Database.getPlants();
-        } else {
-            plants = Database.getNotFullPlants();
-        }
+        plantsListView.setAdapter(adapter);
     }
 }

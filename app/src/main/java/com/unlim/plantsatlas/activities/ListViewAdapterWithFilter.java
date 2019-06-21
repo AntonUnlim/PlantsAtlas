@@ -1,6 +1,7 @@
 package com.unlim.plantsatlas.activities;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.unlim.plantsatlas.R;
 import com.unlim.plantsatlas.data.Listable;
+import com.unlim.plantsatlas.main.FlowerColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ public class ListViewAdapterWithFilter extends BaseAdapter implements Filterable
     private List<Listable> unfilteredList;
     private List<Listable> filteredList;
     private CustomFilter filter;
+    private boolean isColor = false;
 
     public ListViewAdapterWithFilter(Context context, List<Listable> listToFilter) {
         this.context = context;
@@ -28,6 +31,11 @@ public class ListViewAdapterWithFilter extends BaseAdapter implements Filterable
         filteredList = listToFilter;
         this.inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         getFilter();
+    }
+
+    public ListViewAdapterWithFilter(Context context, List<Listable> listToFilter, boolean isColor) {
+        this(context, listToFilter);
+        this.isColor = isColor;
     }
 
     @Override
@@ -56,6 +64,10 @@ public class ListViewAdapterWithFilter extends BaseAdapter implements Filterable
         TextView textViewName = (TextView)view.findViewById(R.id.item_name);
         textViewName.setText(object.toString());
         view.setTag(object);
+
+        if(isColor && object instanceof FlowerColor) {
+            view.setBackgroundColor(((FlowerColor)object).getIntColor());
+        }
 
         return view;
     }

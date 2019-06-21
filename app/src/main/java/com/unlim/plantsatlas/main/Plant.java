@@ -100,7 +100,7 @@ public class Plant implements Cloneable, Serializable, Listable {
     }
 
     public String getText() {
-        return text;
+        return "\t" + text.replace("\\n","\n\t");
     }
 
     @Override

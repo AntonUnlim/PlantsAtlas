@@ -16,10 +16,9 @@ import java.io.OutputStream;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DB_PATH;
     private static String DB_NAME = "db.db";
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 7;
 
     private Context context;
-    private SQLiteDatabase db;
     private boolean isNeedToUpdate = false;
 
     public DatabaseHelper(Context context) {
@@ -53,7 +52,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private void copyDatabase() {
         if(!checkDatabase()) {
             this.getReadableDatabase();
-            this.close();
             try {
                 copyDBFile();
             } catch (IOException e) {
@@ -74,14 +72,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         outputStream.flush();
         outputStream.close();
         inputStream.close();
-    }
-
-    @Override
-    public synchronized void close() {
-        if (db != null) {
-            db.close();
-        }
-        super.close();
     }
 
     @Override

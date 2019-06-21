@@ -7,9 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.unlim.plantsatlas.R;
 import com.unlim.plantsatlas.data.Const;
@@ -27,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listOfSectionsView;
     private List<Listable> listOfSections;
     private SQLiteDatabase db;
+    private boolean isLatNames = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +41,19 @@ public class MainActivity extends AppCompatActivity {
         fillListOfSections();
         listOfSectionsView.setOnItemClickListener(getItemClickListener());
 
-        // temp
-        //TextView title = (TextView)findViewById(R.id.mainActivityTitle);
-        //title.setText(this.getClass().getSimpleName());
     }
 
     private AdapterView.OnItemClickListener getItemClickListener() {
         AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1) {
+                    isLatNames = true;
+                }
+                else {
+                    isLatNames = false;
+                }
+
                 try {
                     startNewActivity(view.getTag());
                 } catch (ClassNotFoundException e) {
@@ -88,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
     private void startNewActivity(Object tag) throws ClassNotFoundException {
         Intent intent;
         intent = new Intent(MainActivity.this, ((Section)tag).getClassToStart());
-        intent.putExtra(Const.INTENT_IS_RUS_NAMES, true);
-        intent.putExtra(Const.INTENT_CATEGORY_LIST, ((Section)tag).getId());
+        intent.putExtra(Const.INTENT_IS_LAT_NAMES, isLatNames);
+        intent.putExtra(Const.INTENT_SECTION, (Section)tag);
         startActivity(intent);
     }
 

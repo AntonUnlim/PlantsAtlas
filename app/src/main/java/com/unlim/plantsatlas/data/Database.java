@@ -246,6 +246,12 @@ public class Database {
         }
         return null;
     }
+    public static Plant getPlantById(int id) {
+        for(Listable plant: plants) {
+            if (((Plant)plant).getId() == id) return (Plant) plant;
+        }
+        return null;
+    }
 
     private static List<Listable> getPlantsByFamily(Family family) {
         List<Listable> resultList = new ArrayList<>();

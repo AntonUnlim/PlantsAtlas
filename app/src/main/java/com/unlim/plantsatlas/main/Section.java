@@ -2,7 +2,9 @@ package com.unlim.plantsatlas.main;
 
 import com.unlim.plantsatlas.data.Listable;
 
-public class Section implements Listable {
+import java.io.Serializable;
+
+public class Section implements Listable, Serializable {
     private int id;
     private String name;
     private Class classToStart;
