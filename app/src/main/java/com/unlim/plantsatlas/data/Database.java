@@ -326,4 +326,15 @@ public class Database {
             notFullPlants = getPlantsByEndangeredList((EndangeredList) tag);
         }
     }
+    public static List<Listable> searchPlants(String searchString) {
+        List<Listable> resultList = new ArrayList<>();
+        for(Listable plant: plants) {
+            if(((Plant)plant).getRusName().toUpperCase().contains(searchString.toUpperCase())
+                    || ((Plant)plant).getLatName().toUpperCase().contains(searchString.toUpperCase())
+                    || ((Plant)plant).getText().toUpperCase().contains(searchString.toUpperCase())) {
+                resultList.add(plant);
+            }
+        }
+        return resultList;
+    }
 }

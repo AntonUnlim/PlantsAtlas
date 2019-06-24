@@ -1,5 +1,6 @@
 package com.unlim.plantsatlas.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import com.unlim.plantsatlas.data.Database;
 import com.unlim.plantsatlas.data.Listable;
 import com.unlim.plantsatlas.main.Plant;
 
+import java.util.Collections;
 import java.util.List;
 
 public class PlantNamesActivity extends AppCompatActivity {
@@ -58,16 +60,19 @@ public class PlantNamesActivity extends AppCompatActivity {
         plantsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Plant selectedPlant = (Plant)view.getTag();
-                Toast t = Toast.makeText(PlantNamesActivity.this, selectedPlant.getName(), Toast.LENGTH_SHORT);
-                t.show();
+                startPlantActivity((Plant)view.getTag());
             }
         });
     }
 
     protected void onResume(){
         super.onResume();
-        adapter = new ListViewAdapterWithFilter(this, plants);
+        if (isLatNames) {
+            Collections.sort(plants, Plant.sortByLatName());
+        } else {
+            Collections.sort(plants, Plant.sortByRusName());
+        }
+        adapter = new ListViewAdapterWithFilter(this, plants, isLatNames);
         fillListOfPlants("");
         searchEditText.setText("");
     }
@@ -76,4 +81,12 @@ public class PlantNamesActivity extends AppCompatActivity {
         adapter.getFilter().filter(searchString);
         plantsListView.setAdapter(adapter);
     }
+
+    private void startPlantActivity(Plant plant) {
+        Intent intent;
+        intent = new Intent(PlantNamesActivity.this, PlantActivity.class);
+        intent.putExtra(Const.INTENT_PLANT_ID, plant.getId());
+        startActivity(intent);
+    }
+
 }

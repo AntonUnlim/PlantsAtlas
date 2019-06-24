@@ -1,7 +1,6 @@
 package com.unlim.plantsatlas.activities;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import com.unlim.plantsatlas.R;
 import com.unlim.plantsatlas.data.Listable;
 import com.unlim.plantsatlas.main.FlowerColor;
+import com.unlim.plantsatlas.main.Plant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ListViewAdapterWithFilter extends BaseAdapter implements Filterable
     private List<Listable> unfilteredList;
     private List<Listable> filteredList;
     private CustomFilter filter;
-    private boolean isColor = false;
+    private boolean flag = false;
 
     public ListViewAdapterWithFilter(Context context, List<Listable> listToFilter) {
         this.context = context;
@@ -33,9 +33,9 @@ public class ListViewAdapterWithFilter extends BaseAdapter implements Filterable
         getFilter();
     }
 
-    public ListViewAdapterWithFilter(Context context, List<Listable> listToFilter, boolean isColor) {
+    public ListViewAdapterWithFilter(Context context, List<Listable> listToFilter, boolean flag) {
         this(context, listToFilter);
-        this.isColor = isColor;
+        this.flag = flag;
     }
 
     @Override
@@ -62,13 +62,16 @@ public class ListViewAdapterWithFilter extends BaseAdapter implements Filterable
         Object object = getItem(position);
 
         TextView textViewName = (TextView)view.findViewById(R.id.item_name);
-        textViewName.setText(object.toString());
+        if(flag && object instanceof Plant) {
+            textViewName.setText(((Plant)object).getLatName());
+        } else {
+            textViewName.setText(object.toString());
+        }
         view.setTag(object);
 
-        if(isColor && object instanceof FlowerColor) {
+        if(flag && object instanceof FlowerColor) {
             view.setBackgroundColor(((FlowerColor)object).getIntColor());
         }
-
         return view;
     }
 
@@ -81,21 +84,34 @@ public class ListViewAdapterWithFilter extends BaseAdapter implements Filterable
     }
 
     private class CustomFilter extends Filter {
-
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
             if(constraint != null && constraint.length() > 0) {
                 List<Listable> filteredList = new ArrayList<>();
                 for(int i = 0; i < ListViewAdapterWithFilter.this.filteredList.size(); i++) {
-                    if(ListViewAdapterWithFilter.this.filteredList.get(i).getName().toUpperCase().contains(constraint.toString().toUpperCase())) {
-                        Listable tmpObject = null;
-                        try {
-                            tmpObject = ListViewAdapterWithFilter.this.filteredList.get(i).clone();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    if(flag && ListViewAdapterWithFilter.this.filteredList.get(i) instanceof Plant) {
+                        // filter by lat name (for plants only)
+                        if (((Plant)ListViewAdapterWithFilter.this.filteredList.get(i)).getLatName().toUpperCase().contains(constraint.toString().toUpperCase())) {
+                            Listable tmpObject = null;
+                            try {
+                                tmpObject = ListViewAdapterWithFilter.this.filteredList.get(i).clone();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            filteredList.add(tmpObject);
                         }
-                        filteredList.add(tmpObject);
+                    } else {
+                        // filter by rus name
+                        if (ListViewAdapterWithFilter.this.filteredList.get(i).getName().toUpperCase().contains(constraint.toString().toUpperCase())) {
+                            Listable tmpObject = null;
+                            try {
+                                tmpObject = ListViewAdapterWithFilter.this.filteredList.get(i).clone();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            filteredList.add(tmpObject);
+                        }
                     }
                 }
                 results.count = filteredList.size();

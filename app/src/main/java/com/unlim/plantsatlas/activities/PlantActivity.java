@@ -60,9 +60,10 @@ public class PlantActivity extends AppCompatActivity {
         if(plant.getListOfAdditionalPhotos().size() > 0) {
             for(String fileName: plant.getListOfAdditionalPhotos()) {
                 ImageView imageView = new ImageView(this);
-                //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 300);
+                imageView.setAdjustViewBounds(true);
                 imageView.setPadding(10, 10, 10, 5);
-                //imageView.setLayoutParams(params);
+                imageView.setLayoutParams(params);
                 InputStream inputStream = null;
                 try {
                     inputStream = getAssets().open("photos/" + fileName);
@@ -71,6 +72,8 @@ public class PlantActivity extends AppCompatActivity {
                 }
                 Drawable image = Drawable.createFromStream(inputStream, null);
                 imageView.setImageDrawable(image);
+                imageView.setTag(fileName);
+                imageView.setOnClickListener(onImageClickListener());
                 lvAdditionalPhotos.addView(imageView);
             }
         }
@@ -97,6 +100,4 @@ public class PlantActivity extends AppCompatActivity {
         ivMainPhoto.setTag(plant.getMainPhotoFileName());
         ivMainPhoto.setImageDrawable(image);
     }
-
-
 }

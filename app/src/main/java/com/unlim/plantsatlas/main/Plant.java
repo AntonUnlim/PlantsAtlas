@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 
 public class Plant implements Cloneable, Serializable, Listable {
@@ -149,5 +150,25 @@ public class Plant implements Cloneable, Serializable, Listable {
             e.printStackTrace();
         }
         return clone;
+    }
+
+    public static Comparator<Listable> sortByRusName() {
+        Comparator comp = new Comparator<Plant>() {
+            @Override
+            public int compare(Plant plant1, Plant plant2) {
+                return plant1.getRusName().compareTo(plant2.getRusName());
+            }
+        };
+        return comp;
+    }
+
+    public static Comparator<Listable> sortByLatName() {
+        Comparator comp = new Comparator<Plant>() {
+            @Override
+            public int compare(Plant plant1, Plant plant2) {
+                return plant1.getLatName().compareTo(plant2.getLatName());
+            }
+        };
+        return comp;
     }
 }
