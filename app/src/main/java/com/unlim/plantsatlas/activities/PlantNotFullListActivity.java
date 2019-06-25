@@ -8,10 +8,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.unlim.plantsatlas.R;
@@ -39,7 +41,9 @@ public class PlantNotFullListActivity extends AppCompatActivity {
     private ListView plantsListView;
     private Object tagFromIntent;
     private List<Listable> listOfPlants;
-    private ListViewAdapterWithFilter adapter;
+    private ListViewAdapterWithFilter adapterText;
+    private ListViewAdapterImageWithTitle adapterImage;
+    private Switch aSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +55,29 @@ public class PlantNotFullListActivity extends AppCompatActivity {
         addTextWatcher();
 
         listOfPlants = Database.getNotFullPlants();
-        adapter = new ListViewAdapterWithFilter(this, listOfPlants);
-        plantsListView.setAdapter(adapter);
+        adapterText = new ListViewAdapterWithFilter(this, listOfPlants);
+        adapterImage = new ListViewAdapterImageWithTitle(this, listOfPlants);
 
+        plantsListView.setAdapter(adapterImage);
         plantsListView.setOnItemClickListener(getItemClickListener());
+        aSwitch.setOnCheckedChangeListener(switchListener());
+    }
+
+    private CompoundButton.OnCheckedChangeListener switchListener() {
+        CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    searchEditText.setVisibility(View.VISIBLE);
+                    plantsListView.setAdapter(adapterText);
+                }
+                if (!isChecked) {
+                    searchEditText.setVisibility(View.INVISIBLE);
+                    plantsListView.setAdapter(adapterImage);
+                }
+            }
+        };
+        return listener;
     }
 
     private AdapterView.OnItemClickListener getItemClickListener() {
@@ -132,10 +155,11 @@ public class PlantNotFullListActivity extends AppCompatActivity {
         imageView = (ImageView)findViewById(R.id.plantNotFullListImage);
         searchEditText = (EditText)findViewById(R.id.plantNotFullListSearchText);
         plantsListView = (ListView)findViewById(R.id.plantNotFullListView);
+        aSwitch = (Switch)findViewById(R.id.plantNotFullListSwitch);
     }
 
     private void fillListOfPlants(CharSequence searchString) {
-        adapter.getFilter().filter(searchString);
-        plantsListView.setAdapter(adapter);
+        adapterText.getFilter().filter(searchString);
+        plantsListView.setAdapter(adapterText);
     }
 }

@@ -5,8 +5,11 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.unlim.plantsatlas.R;
@@ -22,7 +25,7 @@ public class PlantActivity extends AppCompatActivity {
     private TextView tvPlantRusName, tvPlantLatName, tvPlantAuthor, tvPlantFamily, tvPlantText;
     private ImageView ivMainPhoto;
     private Plant plant;
-    private LinearLayout lvAdditionalPhotos;
+    private ListView lvAdditionalPhotos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +42,9 @@ public class PlantActivity extends AppCompatActivity {
         tvPlantAuthor.setText(plant.getAuthor());
         tvPlantFamily.setText("Семейство " + plant.getFamily());
         tvPlantText.setText(plant.getText());
-        setImage();
         setAdditionalPhotos();
+        setImage();
+
         ivMainPhoto.setOnClickListener(onImageClickListener());
     }
 
@@ -56,26 +60,23 @@ public class PlantActivity extends AppCompatActivity {
         return onClickListener;
     }
 
+    private AdapterView.OnItemClickListener onItemClickListener() {
+        AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(PlantActivity.this, PhotoActivity.class);
+                intent.putExtra(Const.INTENT_PHOTO, view.getTag().toString());
+                startActivity(intent);
+            }
+        };
+        return onItemClickListener;
+    }
+
     private void setAdditionalPhotos() {
         if(plant.getListOfAdditionalPhotos().size() > 0) {
-            for(String fileName: plant.getListOfAdditionalPhotos()) {
-                ImageView imageView = new ImageView(this);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 300);
-                imageView.setAdjustViewBounds(true);
-                imageView.setPadding(10, 10, 10, 5);
-                imageView.setLayoutParams(params);
-                InputStream inputStream = null;
-                try {
-                    inputStream = getAssets().open("photos/" + fileName);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Drawable image = Drawable.createFromStream(inputStream, null);
-                imageView.setImageDrawable(image);
-                imageView.setTag(fileName);
-                imageView.setOnClickListener(onImageClickListener());
-                lvAdditionalPhotos.addView(imageView);
-            }
+            ListViewAdapterImage imageAdapter = new ListViewAdapterImage(PlantActivity.this, plant.getListOfAdditionalPhotos());
+            lvAdditionalPhotos.setAdapter(imageAdapter);
+            lvAdditionalPhotos.setOnItemClickListener(onItemClickListener());
         }
     }
 
@@ -86,7 +87,7 @@ public class PlantActivity extends AppCompatActivity {
         tvPlantFamily = (TextView)findViewById(R.id.plantFamily);
         tvPlantText = (TextView)findViewById(R.id.plantText);
         ivMainPhoto = (ImageView)findViewById(R.id.plantMainImage);
-        lvAdditionalPhotos = (LinearLayout)findViewById(R.id.plantAdditionalImages);
+        lvAdditionalPhotos = (ListView) findViewById(R.id.plantAdditionalImages);
     }
 
     private void setImage() {
@@ -100,4 +101,6 @@ public class PlantActivity extends AppCompatActivity {
         ivMainPhoto.setTag(plant.getMainPhotoFileName());
         ivMainPhoto.setImageDrawable(image);
     }
+
+
 }

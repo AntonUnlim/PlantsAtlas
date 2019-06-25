@@ -4,10 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
-    <TextView
-        android:id="@+id/item_name"
+    <ImageView
+        android:id="@+id/imageListImage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textColor="@color/mainTextColor"/>
+        android:layout_height="300dp"
+        android:padding="10dp"/>
 </LinearLayout>

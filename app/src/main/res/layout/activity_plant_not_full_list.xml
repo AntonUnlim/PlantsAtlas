@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,15 +13,26 @@
     <ImageView
         android:id="@+id/plantNotFullListImage"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="250dp" />
+    <Switch
+        android:id="@+id/plantNotFullListSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Текстовый формат"
+        android:textColor="@color/mainTextColor"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/mainTextColor" />
     <EditText
         style="@style/EditTextSearchStyle"
-        android:id="@+id/plantNotFullListSearchText"/>
-
+        android:id="@+id/plantNotFullListSearchText"
+        android:visibility="invisible"/>
     <ListView
         android:id="@+id/plantNotFullListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>
-
 </LinearLayout>
