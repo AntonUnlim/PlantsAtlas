@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,6 +8,7 @@
     android:orientation="vertical"
     android:background="@color/background">
     <TextView
+        android:layout_alignParentTop="true"
         android:id="@+id/plantTitleRus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,6 +16,8 @@
         android:textColor="@color/mainTextColor"
         android:gravity="center_horizontal" />
     <LinearLayout
+        android:id="@+id/plantTitleLatAuthor"
+        android:layout_below="@+id/plantTitleRus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -37,11 +40,46 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/mainTextColor"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/plantTitleLatAuthor"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/mainTextColor"
+        android:layout_below="@id/plantFamily"/>
+
+    <LinearLayout
+        android:id="@+id/tabs"
+        android:layout_below="@+id/plantFamily"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="5dp">
+        <TextView
+            android:id="@+id/tabDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Описание"
+            android:textColor="@color/mainTextColor"
+            android:layout_weight="1"
+            android:textAlignment="center" />
+        <TextView
+            android:id="@+id/tabCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Систематика"
+            android:textColor="@color/mainTextColor"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:background="@drawable/tab_shape" />
+    </LinearLayout>
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/tabScreenDescription"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:visibility="visible"
+        android:layout_below="@+id/tabs">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,4 +104,74 @@
             </ListView>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/tabScreenCategory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:visibility="invisible"
+        android:layout_below="@+id/tabs">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp">
+            <TableRow>
+                <TextView
+                    android:id="@+id/tableLifeFormTitle"
+                    android:text="Жизненная форма"
+                    style="@style/tableColumnTitle"/>
+                <TextView
+                    android:id="@+id/tableLifeForm"
+                    style="@style/tableColumnValue"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/tableValueTitle"
+                    android:text="Значение"
+                    style="@style/tableColumnTitle"/>
+                <TextView
+                    android:id="@+id/tableValue"
+                    style="@style/tableColumnValue" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/tableHabitatTitle"
+                    android:text="Местообитание"
+                    style="@style/tableColumnTitle"/>
+                <TextView
+                    android:id="@+id/tableHabitat"
+                    style="@style/tableColumnValue" />
+            </TableRow>
+            <TableRow android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tableRedBookSarTitle"
+                    android:text="Красная книга\nСаратовской области"
+                    android:lines="2"
+                    style="@style/tableColumnTitle"/>
+                <TextView
+                    android:id="@+id/tableRedBookSar"
+                    style="@style/tableColumnValue"
+                    android:lines="2"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/tableRedBookRFTitle"
+                    android:text="Красная книга РФ"
+                    style="@style/tableColumnTitle"/>
+                <TextView
+                    android:id="@+id/tableRedBookRF"
+                    style="@style/tableColumnValue" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/tableFlowerColorTitle"
+                    android:text="Цветок"
+                    style="@style/tableColumnTitle"/>
+                <TextView
+                    android:id="@+id/tableFlowerColor"
+                    style="@style/tableColumnValue" />
+            </TableRow>
+        </TableLayout>
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

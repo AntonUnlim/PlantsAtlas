@@ -15,13 +15,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Введите текст..."
-        android:textColorHint="@color/hintTextColor" />
+        android:textColorHint="@color/hintTextColor"
+        android:textColor="@color/mainTextColor"/>
     <Button
         android:id="@+id/btnSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:text="Искать"/>
+        android:text="Искать"
+        android:textColor="@color/background"
+        android:background="@drawable/buttonshape"
+        android:layout_marginRight="10dp"/>
+    <TextView
+        android:id="@+id/searchTextViewNothing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/mainTextColor"
+        android:text="Ничего не найдено"
+        android:visibility="invisible"
+        android:paddingHorizontal="10dp"/>
     <ListView
         android:id="@+id/searchListView"
         android:layout_width="match_parent"

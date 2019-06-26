@@ -4,4 +4,5 @@
     <color name="mainTextColor">#00351f</color>
     <color name="hintTextColor">#bacbc1</color>
     <color name="black">#000000</color>
+    <color name="grey">#cccccc</color>
 </resources>

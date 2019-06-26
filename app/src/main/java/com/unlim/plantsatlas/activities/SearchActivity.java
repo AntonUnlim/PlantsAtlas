@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.unlim.plantsatlas.R;
 import com.unlim.plantsatlas.data.Const;
@@ -59,6 +60,12 @@ public class SearchActivity extends AppCompatActivity {
                     searchListView.setAdapter(adapter);
                     InputMethodManager inputMethodManager = (InputMethodManager)SearchActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(SearchActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    TextView tv = (TextView)findViewById(R.id.searchTextViewNothing);
+                    if (plants.size() == 0) {
+                        tv.setVisibility(View.VISIBLE);
+                    } else {
+                        tv.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
         };
