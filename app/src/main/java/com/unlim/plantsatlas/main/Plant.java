@@ -233,4 +233,26 @@ public class Plant implements Cloneable, Serializable, Listable {
         if(isEndangeredListRussia() && yesNoIDs[0] == 1) return true;
         return !isEndangeredListRussia() && yesNoIDs[0] == 0;
     }
+
+    public boolean hasLifeForm(LifeForm lifeForm) {
+        return getLifeForm() == lifeForm;
+    }
+
+    public boolean hasHabitat(Habitat habitat) {
+        if(getHabitats() == null) return false;
+        return getHabitats().contains(habitat);
+    }
+
+    public boolean hasValue(Value value) {
+        if(getValues() == null) return false;
+        return getValues().contains(value);
+    }
+
+    public boolean hasFamily(Family family) {
+        return getFamily() == family;
+    }
+
+    public boolean hasFlowerColor(FlowerColor flowerColor) {
+        return getFlowerColor() == flowerColor;
+    }
 }

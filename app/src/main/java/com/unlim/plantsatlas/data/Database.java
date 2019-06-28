@@ -353,7 +353,7 @@ public class Database {
                     ((Plant)plant).hasLifeForm(lifeFormIDs) &&
                     (((Plant)plant).hasValue(valueIDs) || ((Plant)plant).getValues().size() == 0) &&
                     (((Plant)plant).hasHabitat(habitatIDs) || ((Plant)plant).getHabitats().size() == 0) &&
-                    (((Plant)plant).hasFlowerColor(flowerColorIDs) || ((flowerColorIDs.length > 1) && ((Plant)plant).getFlowerColor() == null)) &&
+                    ((Plant)plant).hasFlowerColor(flowerColorIDs) &&
                     ((Plant)plant).hasEndangeredListSar(endangeredListSaratov) &&
                     ((Plant)plant).hasEndangeredListRF(endangeredListRussia)) {
                 resultList.add(plant);
@@ -455,5 +455,95 @@ public class Database {
             yesNoIDs[0] = yesNo.getId();
         }
         return yesNoIDs;
+    }
+
+    public static int getAmountOfPlantsByCategory(Listable category) {
+        int amountOfPlants;
+        if(category instanceof Family) {
+            amountOfPlants = getAmountOfPlantsByFamily((Family)category);
+        } else if (category instanceof LifeForm) {
+            amountOfPlants = getAmountOfPlantsByLifeForm((LifeForm)category);
+        } else if (category instanceof FlowerColor) {
+            amountOfPlants = getAmountOfPlantsByFlowerColor((FlowerColor)category);
+        } else if (category instanceof EndangeredList) {
+            if (((EndangeredList)category).getId() == 1) {
+                amountOfPlants = getAmountOfPlantsByEndangeredListSaratov();
+            } else if (((EndangeredList)category).getId() == 2) {
+                amountOfPlants = getAmountOfPlantsByEndangeredListRussia();
+            } else {
+                amountOfPlants = 0;
+            }
+        } else if (category instanceof Value) {
+            amountOfPlants = getAmountOfPlantsByValue((Value)category);
+        } else if (category instanceof Habitat) {
+            amountOfPlants = getAmountOfPlantsByHabitat((Habitat)category);
+        } else {
+            amountOfPlants = 0;
+        }
+        return amountOfPlants;
+    }
+
+    private static int getAmountOfPlantsByFamily(Family family) {
+        int amount = 0;
+        for(Listable plant: plants) {
+            if(((Plant)plant).hasFamily(family)) {
+                amount++;
+            }
+        }
+        return amount;
+    }
+    private static int getAmountOfPlantsByLifeForm(LifeForm lifeForm) {
+        int amount = 0;
+        for(Listable plant: plants) {
+            if(((Plant)plant).hasLifeForm(lifeForm)) {
+                amount++;
+            }
+        }
+        return amount;
+    }
+    private static int getAmountOfPlantsByFlowerColor(FlowerColor flowerColor) {
+        int amount = 0;
+        for(Listable plant: plants) {
+            if(((Plant)plant).hasFlowerColor(flowerColor)) {
+                amount++;
+            }
+        }
+        return amount;
+    }
+    private static int getAmountOfPlantsByEndangeredListSaratov() {
+        int amount = 0;
+        for(Listable plant: plants) {
+            if(((Plant)plant).isEndangeredListSaratov()) {
+                amount++;
+            }
+        }
+        return amount;
+    }
+    private static int getAmountOfPlantsByEndangeredListRussia() {
+        int amount = 0;
+        for(Listable plant: plants) {
+            if(((Plant)plant).isEndangeredListRussia()) {
+                amount++;
+            }
+        }
+        return amount;
+    }
+    private static int getAmountOfPlantsByValue(Value value) {
+        int amount = 0;
+        for(Listable plant: plants) {
+            if(((Plant)plant).hasValue(value)) {
+                amount++;
+            }
+        }
+        return amount;
+    }
+    private static int getAmountOfPlantsByHabitat(Habitat habitat) {
+        int amount = 0;
+        for(Listable plant: plants) {
+            if(((Plant)plant).hasHabitat(habitat)) {
+                amount++;
+            }
+        }
+        return amount;
     }
 }

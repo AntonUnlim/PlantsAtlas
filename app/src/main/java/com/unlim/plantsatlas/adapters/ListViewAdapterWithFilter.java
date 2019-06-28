@@ -10,9 +10,11 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.unlim.plantsatlas.R;
+import com.unlim.plantsatlas.data.Database;
 import com.unlim.plantsatlas.data.Listable;
 import com.unlim.plantsatlas.main.FlowerColor;
 import com.unlim.plantsatlas.main.Plant;
+import com.unlim.plantsatlas.main.Section;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +69,12 @@ public class ListViewAdapterWithFilter extends BaseAdapter implements Filterable
         } else {
             textViewName.setText(object.toString());
         }
+
+        if(!(object instanceof Plant) && !(object instanceof Section)) {
+            TextView textViewAmountOfPlants = (TextView)view.findViewById(R.id.amountOfPlants);
+            textViewAmountOfPlants.setText(Database.getAmountOfPlantsByCategory((Listable)object) + " шт");
+        }
+
         view.setTag(object);
 
         if(flag && object instanceof FlowerColor) {
