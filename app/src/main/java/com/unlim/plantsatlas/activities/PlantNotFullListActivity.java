@@ -17,6 +17,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.unlim.plantsatlas.R;
+import com.unlim.plantsatlas.adapters.ListViewAdapterImageWithTitle;
+import com.unlim.plantsatlas.adapters.ListViewAdapterWithFilter;
 import com.unlim.plantsatlas.data.Const;
 import com.unlim.plantsatlas.data.Database;
 import com.unlim.plantsatlas.data.Listable;

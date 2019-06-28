@@ -11,4 +11,15 @@ public class Const {
     public static String getTextAbout() {
         return "\t" + ABOUT_TEXT.replace("\n", "\n\t");
     }
+
+    public static final String getPlantsAmountString(int amount) {
+        int lastFigure = amount % 10;
+        int preLastFigure = amount / 10 % 10;
+        String endOfMessage = "";
+        if (lastFigure == 1 && preLastFigure != 1) endOfMessage = " растение";
+        else if ((lastFigure == 2 || lastFigure == 3 || lastFigure == 4) && preLastFigure != 1)
+            endOfMessage = " растения";
+        else endOfMessage = " растений";
+        return "Найдено " + amount + endOfMessage;
+    }
 }

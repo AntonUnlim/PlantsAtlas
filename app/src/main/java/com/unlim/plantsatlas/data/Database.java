@@ -11,6 +11,7 @@ import com.unlim.plantsatlas.main.LifeForm;
 import com.unlim.plantsatlas.main.Plant;
 import com.unlim.plantsatlas.main.Section;
 import com.unlim.plantsatlas.main.Value;
+import com.unlim.plantsatlas.main.YesNo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Database {
     private static List<Listable> notFullPlants;
     private static List<Listable> sections;
     private static List<Listable> endangeredLists;
+    private static List<Listable> yesNoList;
 
     public static List<Listable> getFamilies() { return families; }
     public static List<Listable> getFlowerColors() { return flowerColors; }
@@ -37,6 +39,7 @@ public class Database {
     public static List<Listable> getSections() { return sections; }
     public static List<Listable> getEndangeredLists() { return endangeredLists; }
     public static List<Listable> getNotFullPlants() { return notFullPlants; }
+    public static List<Listable> getYesNoList() { return yesNoList; }
 
     public static void fillMainData(SQLiteDatabase db) throws ClassNotFoundException {
         fillSections(db);
@@ -47,6 +50,7 @@ public class Database {
         fillValues(db);
         fillPlants(db);
         fillEndangeredLists();
+        fillYesNoList();
     }
 
     private static void fillFamilies(SQLiteDatabase db) {
@@ -164,6 +168,9 @@ public class Database {
         endangeredLists = new ArrayList<>();
         endangeredLists.add(new EndangeredList(1, "Красная книга Саратовской области", ""));
         endangeredLists.add(new EndangeredList(2, "Красная книга РФ", ""));
+    }
+    private static void fillYesNoList() {
+        yesNoList = YesNo.getYesNoList();
     }
 
     private static List<Value> getPlantValuesFromDB(SQLiteDatabase db, int id) {
@@ -326,15 +333,127 @@ public class Database {
             notFullPlants = getPlantsByEndangeredList((EndangeredList) tag);
         }
     }
-    public static List<Listable> searchPlants(String searchString) {
+    public static List<Listable> searchPlants(String searchString, Family family, LifeForm lifeForm,
+                                              Value value, Habitat habitat, FlowerColor flowerColor,
+                                              YesNo endangeredListSar, YesNo endangeredListRF) {
         List<Listable> resultList = new ArrayList<>();
+        int[] familyIDs = fillFamilyIDsForSearch(family);
+        int[] lifeFormIDs = fillLifeFormIDsForSearch(lifeForm);
+        int[] valueIDs = fillValueIDsForSearch(value);
+        int[] habitatIDs = fillHabitatIDsForSearch(habitat);
+        int[] flowerColorIDs = fillFlowerColorIDsForSearch(flowerColor);
+        int[] endangeredListSaratov = fillYesNoIDsForSearch(endangeredListSar);
+        int[] endangeredListRussia = fillYesNoIDsForSearch(endangeredListRF);
+
         for(Listable plant: plants) {
-            if(((Plant)plant).getRusName().toUpperCase().contains(searchString.toUpperCase())
+            if((((Plant)plant).getRusName().toUpperCase().contains(searchString.toUpperCase())
                     || ((Plant)plant).getLatName().toUpperCase().contains(searchString.toUpperCase())
-                    || ((Plant)plant).getText().toUpperCase().contains(searchString.toUpperCase())) {
+                    || ((Plant)plant).getText().toUpperCase().contains(searchString.toUpperCase()))
+                && ((Plant)plant).hasFamily(familyIDs) &&
+                    ((Plant)plant).hasLifeForm(lifeFormIDs) &&
+                    (((Plant)plant).hasValue(valueIDs) || ((Plant)plant).getValues().size() == 0) &&
+                    (((Plant)plant).hasHabitat(habitatIDs) || ((Plant)plant).getHabitats().size() == 0) &&
+                    (((Plant)plant).hasFlowerColor(flowerColorIDs) || ((flowerColorIDs.length > 1) && ((Plant)plant).getFlowerColor() == null)) &&
+                    ((Plant)plant).hasEndangeredListSar(endangeredListSaratov) &&
+                    ((Plant)plant).hasEndangeredListRF(endangeredListRussia)) {
                 resultList.add(plant);
             }
         }
         return resultList;
+    }
+
+    public static List<Listable> definePlants(FlowerColor flowerColor, LifeForm lifeForm, Habitat habitat) {
+        List<Listable> resultList = new ArrayList<>();
+        int[] flowerColorIDs = fillFlowerColorIDsForSearch(flowerColor);
+        int[] lifeFormIDs = fillLifeFormIDsForSearch(lifeForm);
+        int[] habitatIDs = fillHabitatIDsForSearch(habitat);
+
+        for(Listable plant: plants) {
+            if (((Plant)plant).hasFlowerColor(flowerColorIDs) &&
+                    ((Plant)plant).hasLifeForm(lifeFormIDs) &&
+                    ((Plant)plant).hasHabitat(habitatIDs)) {
+                resultList.add(plant);
+            }
+        }
+        return resultList;
+    }
+
+    private static int[] fillFlowerColorIDsForSearch(FlowerColor flowerColor) {
+        int[] flowerColorIDs;
+        if (flowerColor == null) {
+            flowerColorIDs = new int[flowerColors.size()];
+            for(int i = 0; i < flowerColors.size(); i++) {
+                flowerColorIDs[i] = ((FlowerColor)flowerColors.get(i)).getId();
+            }
+        } else {
+            flowerColorIDs = new int[1];
+            flowerColorIDs[0] = flowerColor.getId();
+        }
+        return flowerColorIDs;
+    }
+    private static int[] fillFamilyIDsForSearch(Family family) {
+        int[] familyIDs;
+        if (family == null) {
+            familyIDs = new int[families.size()];
+            for(int i = 0; i < families.size(); i++) {
+                familyIDs[i] = ((Family)families.get(i)).getId();
+            }
+        } else {
+            familyIDs = new int[1];
+            familyIDs[0] = family.getId();
+        }
+        return familyIDs;
+    }
+    private static int[] fillLifeFormIDsForSearch(LifeForm lifeForm) {
+        int[] lifeFormIDs;
+        if (lifeForm == null) {
+            lifeFormIDs = new int[lifeForms.size()];
+            for(int i = 0; i < lifeForms.size(); i++) {
+                lifeFormIDs[i] = ((LifeForm)lifeForms.get(i)).getId();
+            }
+        } else {
+            lifeFormIDs = new int[1];
+            lifeFormIDs[0] = lifeForm.getId();
+        }
+        return lifeFormIDs;
+    }
+    private static int[] fillHabitatIDsForSearch(Habitat habitat) {
+        int[] habitatIDs;
+        if (habitat == null) {
+            habitatIDs = new int[habitats.size()];
+            for(int i = 0; i < habitats.size(); i++) {
+                habitatIDs[i] = ((Habitat)habitats.get(i)).getId();
+            }
+        } else {
+            habitatIDs = new int[1];
+            habitatIDs[0] = habitat.getId();
+        }
+        return habitatIDs;
+    }
+    private static int[] fillValueIDsForSearch(Value value) {
+        int[] valueIDs;
+        if (value == null) {
+            valueIDs = new int[values.size()];
+            for(int i = 0; i < values.size(); i++) {
+                valueIDs[i] = ((Value)values.get(i)).getId();
+            }
+        } else {
+            valueIDs = new int[1];
+            valueIDs[0] = value.getId();
+        }
+        return valueIDs;
+    }
+    private static int[] fillYesNoIDsForSearch(YesNo yesNo) {
+        int[] yesNoIDs;
+        if (yesNo == null) {
+            yesNoIDs = new int[yesNoList.size()];
+            for(int i = 0; i < yesNoList.size(); i++) {
+                yesNoIDs[i] = ((YesNo)yesNoList.get(i)).getId();
+            }
+        } else {
+            yesNoIDs = new int[1];
+            yesNoIDs[0] = yesNo.getId();
+        }
+        return yesNoIDs;
     }
 }

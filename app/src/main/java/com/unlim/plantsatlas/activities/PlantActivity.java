@@ -7,22 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.unlim.plantsatlas.R;
+import com.unlim.plantsatlas.adapters.ListViewAdapterImage;
 import com.unlim.plantsatlas.data.Const;
 import com.unlim.plantsatlas.data.Database;
-import com.unlim.plantsatlas.main.EndangeredList;
-import com.unlim.plantsatlas.main.Family;
-import com.unlim.plantsatlas.main.FlowerColor;
-import com.unlim.plantsatlas.main.Habitat;
-import com.unlim.plantsatlas.main.LifeForm;
 import com.unlim.plantsatlas.main.Plant;
-import com.unlim.plantsatlas.main.Value;
 
 import java.io.IOException;
 import java.io.InputStream;

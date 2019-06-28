@@ -7,7 +7,6 @@ public class EndangeredList extends Category implements Listable {
         super(id, name, imageFile);
     }
 
-
     @Override
     public Listable clone() {
         return this;

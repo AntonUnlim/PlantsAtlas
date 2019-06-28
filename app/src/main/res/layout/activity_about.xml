@@ -15,9 +15,6 @@
         android:layout_height="match_parent">
         <TextView
             android:id="@+id/tvAboutText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/mainTextColor"
-            android:padding="10dp" />
+            style="@style/normalText" />
     </ScrollView>
 </LinearLayout>

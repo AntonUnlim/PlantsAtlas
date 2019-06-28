@@ -171,4 +171,66 @@ public class Plant implements Cloneable, Serializable, Listable {
         };
         return comp;
     }
+
+    public boolean hasFlowerColor(int[] flowerColorIDs) {
+        if(getFlowerColor() == null) return false;
+        for(int ID: flowerColorIDs) {
+            if (getFlowerColor().getId() == ID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasLifeForm(int[] lifeFormIDs) {
+        if(getLifeForm() == null) return false;
+        for(int ID: lifeFormIDs) {
+            if (getLifeForm().getId() == ID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasHabitat(int[] habitatIDs) {
+        if(getHabitats() == null) return false;
+        for(Habitat habitat: habitats) {
+            for(int ID: habitatIDs) {
+                if (habitat.getId() == ID) return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasValue(int[] valueIDs) {
+        if(getValues() == null) return false;
+        for(Value value: values) {
+            for(int ID: valueIDs) {
+                if (value.getId() == ID) return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasFamily(int[] familyIDs) {
+        if(getFamily() == null) return false;
+        for(int ID: familyIDs) {
+            if (getFamily().getId() == ID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasEndangeredListSar(int[] yesNoIDs) {
+        if(yesNoIDs.length == 2) return true;
+        if(isEndangeredListSaratov() && yesNoIDs[0] == 1) return true;
+        return !isEndangeredListSaratov() && yesNoIDs[0] == 0;
+    }
+
+    public boolean hasEndangeredListRF(int[] yesNoIDs) {
+        if(yesNoIDs.length == 2) return true;
+        if(isEndangeredListRussia() && yesNoIDs[0] == 1) return true;
+        return !isEndangeredListRussia() && yesNoIDs[0] == 0;
+    }
 }

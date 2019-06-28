@@ -10,13 +10,12 @@
 
     <TextView
         style="@style/TextViewTitleStyle"
-        android:text="Атлас растений\nСаратовской области"
-        android:id="@+id/mainActivityTitle"
-        />
+        android:text="Атлас растений\nСаратовской области" />
 
     <ListView
         android:id="@+id/listOfSections"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent">
+    </ListView>
 
 </LinearLayout>

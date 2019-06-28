@@ -10,13 +10,22 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.unlim.plantsatlas.R;
+import com.unlim.plantsatlas.adapters.ListViewAdapterWithFilter;
+import com.unlim.plantsatlas.adapters.SpinnerAdapter;
 import com.unlim.plantsatlas.data.Const;
 import com.unlim.plantsatlas.data.Database;
 import com.unlim.plantsatlas.data.Listable;
+import com.unlim.plantsatlas.main.Family;
+import com.unlim.plantsatlas.main.FlowerColor;
+import com.unlim.plantsatlas.main.Habitat;
+import com.unlim.plantsatlas.main.LifeForm;
 import com.unlim.plantsatlas.main.Plant;
+import com.unlim.plantsatlas.main.Value;
+import com.unlim.plantsatlas.main.YesNo;
 
 import java.util.List;
 
@@ -27,15 +36,41 @@ public class SearchActivity extends AppCompatActivity {
     private ListView searchListView;
     private List<Listable> plants;
     private ListViewAdapterWithFilter adapter;
+    private TextView textViewFoundAmount;
+    private Spinner
+            spinnerFamily,
+            spinnerLifeForm,
+            spinnerValue,
+            spinnerHabitat,
+            spinnerFlowerColor,
+            spinnerEndangeredListSar,
+            spinnerEndangeredListRF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         findAllViews();
-
+        fillSpinners();
         btnSearch.setOnClickListener(onSearchButtonClickListener());
         searchListView.setOnItemClickListener(onItemClickListener());
+    }
+
+    private void fillSpinners() {
+        SpinnerAdapter adapterFamily = new SpinnerAdapter(this, Database.getFamilies());
+        spinnerFamily.setAdapter(adapterFamily);
+        SpinnerAdapter adapterLifeForm = new SpinnerAdapter(this, Database.getLifeForms());
+        spinnerLifeForm.setAdapter(adapterLifeForm);
+        SpinnerAdapter adapterValue = new SpinnerAdapter(this, Database.getValues());
+        spinnerValue.setAdapter(adapterValue);
+        SpinnerAdapter adapterHabitat = new SpinnerAdapter(this, Database.getHabitats());
+        spinnerHabitat.setAdapter(adapterHabitat);
+        SpinnerAdapter adapterFlowerColor = new SpinnerAdapter(this, Database.getFlowerColors());
+        spinnerFlowerColor.setAdapter(adapterFlowerColor);
+        SpinnerAdapter adapterEndangeredList = new SpinnerAdapter(this, Database.getYesNoList());
+        spinnerEndangeredListSar.setAdapter(adapterEndangeredList);
+        spinnerEndangeredListRF.setAdapter(adapterEndangeredList);
+
     }
 
     private AdapterView.OnItemClickListener onItemClickListener() {
@@ -54,19 +89,21 @@ public class SearchActivity extends AppCompatActivity {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(searchString.getText().length() > 0) {
-                    plants = Database.searchPlants(searchString.getText().toString());
-                    adapter = new ListViewAdapterWithFilter(SearchActivity.this, plants);
-                    searchListView.setAdapter(adapter);
-                    InputMethodManager inputMethodManager = (InputMethodManager)SearchActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(SearchActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    TextView tv = (TextView)findViewById(R.id.searchTextViewNothing);
-                    if (plants.size() == 0) {
-                        tv.setVisibility(View.VISIBLE);
-                    } else {
-                        tv.setVisibility(View.INVISIBLE);
-                    }
-                }
+                plants = Database.searchPlants(
+                        searchString.getText().toString(),
+                        (Family)spinnerFamily.getSelectedItem(),
+                        (LifeForm)spinnerLifeForm.getSelectedItem(),
+                        (Value)spinnerValue.getSelectedItem(),
+                        (Habitat)spinnerHabitat.getSelectedItem(),
+                        (FlowerColor)spinnerFlowerColor.getSelectedItem(),
+                        (YesNo)spinnerEndangeredListSar.getSelectedItem(),
+                        (YesNo)spinnerEndangeredListRF.getSelectedItem()
+                        );
+                adapter = new ListViewAdapterWithFilter(SearchActivity.this, plants);
+                searchListView.setAdapter(adapter);
+                InputMethodManager inputMethodManager = (InputMethodManager)SearchActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(SearchActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                textViewFoundAmount.setText(Const.getPlantsAmountString(plants.size()));
             }
         };
         return listener;
@@ -76,5 +113,13 @@ public class SearchActivity extends AppCompatActivity {
         searchString = (EditText)findViewById(R.id.searchStringSearchActivity);
         btnSearch = (Button)findViewById(R.id.btnSearch);
         searchListView = (ListView)findViewById(R.id.searchListView);
+        textViewFoundAmount = (TextView)findViewById(R.id.searchAmountFound);
+        spinnerFamily = (Spinner)findViewById(R.id.searchSpinnerFamily);
+        spinnerLifeForm = (Spinner)findViewById(R.id.searchSpinnerLifeForm);
+        spinnerValue = (Spinner)findViewById(R.id.searchSpinnerValue);
+        spinnerHabitat = (Spinner)findViewById(R.id.searchSpinnerHabitat);
+        spinnerFlowerColor = (Spinner)findViewById(R.id.searchSpinnerFlowerColor);
+        spinnerEndangeredListSar = (Spinner)findViewById(R.id.searchSpinnerEndangeredListSar);
+        spinnerEndangeredListRF = (Spinner)findViewById(R.id.searchSpinnerEndangeredListRF);
     }
 }

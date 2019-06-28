@@ -3,36 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.unlim.plantsatlas"
     android:versionCode="1"
-    tools:ignore="GradleOverrides"
-    android:versionName="1.0">
+    android:versionName="1.0"
+    tools:ignore="GradleOverrides">
 
     <application
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
-        android:fullBackupContent="@xml/backup_descriptor"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activities.DefinerActivity"></activity>
         <activity
             android:name=".activities.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activities.SearchActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AboutActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".activities.PhotoActivity" />
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.PhotoActivity" />
         <activity
             android:name=".activities.PlantActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.PlantNotFullListActivity"
             android:screenOrientation="portrait"
@@ -49,4 +50,5 @@
             android:name=".activities.MainActivity"
             android:screenOrientation="portrait" />
     </application>
+
 </manifest>

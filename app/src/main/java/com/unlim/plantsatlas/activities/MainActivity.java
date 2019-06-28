@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.unlim.plantsatlas.R;
+import com.unlim.plantsatlas.adapters.ListViewAdapterWithFilter;
 import com.unlim.plantsatlas.data.Const;
 import com.unlim.plantsatlas.data.Database;
 import com.unlim.plantsatlas.data.DatabaseHelper;

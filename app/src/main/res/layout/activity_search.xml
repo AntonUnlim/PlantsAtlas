@@ -6,34 +6,164 @@
     android:layout_height="match_parent"
     tools:context=".activities.SearchActivity"
     android:background="@color/background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
     <TextView
         style="@style/TextViewTitleStyle"
         android:text="Поиск"/>
     <EditText
         android:id="@+id/searchStringSearchActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Введите текст..."
-        android:textColorHint="@color/hintTextColor"
-        android:textColor="@color/mainTextColor"/>
-    <Button
-        android:id="@+id/btnSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="Искать"
-        android:textColor="@color/background"
-        android:background="@drawable/buttonshape"
-        android:layout_marginRight="10dp"/>
+        style="@style/EditTextSearchStyle"/>
     <TextView
-        android:id="@+id/searchTextViewNothing"
+        style="@style/tableColumnValueWithoutBorders"
+        android:text="Семейство" />
+    <Spinner
+        android:id="@+id/searchSpinnerFamily"
+        style="@style/spinner"/>
+    <View style="@style/line"/>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        // row 1
+        <TableRow>
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                // col 1
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        style="@style/tableColumnValueWithoutBorders"
+                        android:text="Жизненная форма" />
+                    <Spinner
+                        android:id="@+id/searchSpinnerLifeForm"
+                        style="@style/spinner"/>
+                    <View style="@style/line"/>
+                </LinearLayout>
+                // col 2
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        style="@style/tableColumnValueWithoutBorders"
+                        android:text="Значение" />
+                    <Spinner
+                        android:id="@+id/searchSpinnerValue"
+                        style="@style/spinner"/>
+                    <View style="@style/line"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </TableRow>
+        // row 2
+        <TableRow>
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                // col 1
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        style="@style/tableColumnValueWithoutBorders"
+                        android:text="Местообитание" />
+                    <Spinner
+                        android:id="@+id/searchSpinnerHabitat"
+                        style="@style/spinner"/>
+                    <View style="@style/line"/>
+                </LinearLayout>
+                // col 2
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        style="@style/tableColumnValueWithoutBorders"
+                        android:text="Цветок" />
+                    <Spinner
+                        android:id="@+id/searchSpinnerFlowerColor"
+                        style="@style/spinner"/>
+                    <View style="@style/line"/>
+                </LinearLayout>
+            </LinearLayout>
+        </TableRow>
+        // row 3
+        <TableRow>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/tableColumnValueWithoutBorders"
+                    android:text="Красная книга"
+                    android:gravity="center" />
+                <LinearLayout android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    // col 1
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <TextView
+                            style="@style/tableColumnValueWithoutBorders"
+                            android:text="Саратовской области" />
+                        <Spinner
+                            android:id="@+id/searchSpinnerEndangeredListSar"
+                            style="@style/spinner"/>
+                        <View style="@style/line"/>
+                    </LinearLayout>
+                    // col 2
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <TextView
+                            style="@style/tableColumnValueWithoutBorders"
+                            android:text="Российской Федерации" />
+                        <Spinner
+                            android:id="@+id/searchSpinnerEndangeredListRF"
+                            style="@style/spinner" />
+                        <View style="@style/line"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </TableRow>
+    </TableLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/mainTextColor"
-        android:text="Ничего не найдено"
-        android:visibility="invisible"
-        android:paddingHorizontal="10dp"/>
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+        <TextView
+            style="@style/tableColumnValueWithoutBorders"
+            android:id="@+id/searchAmountFound"
+            android:layout_weight="0.3"/>
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Искать"
+            android:textColor="@color/background"
+            android:background="@drawable/button_shape"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.7"/>
+    </LinearLayout>
+    <View style="@style/line"/>
     <ListView
         android:id="@+id/searchListView"
         android:layout_width="match_parent"

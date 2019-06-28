@@ -20,5 +20,4 @@
                 android:adjustViewBounds="true"/>
         </ScrollView>
     </HorizontalScrollView>
-
 </RelativeLayout>
