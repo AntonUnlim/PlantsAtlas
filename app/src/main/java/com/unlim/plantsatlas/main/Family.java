@@ -53,7 +53,6 @@ public class Family implements Serializable, Listable {
         }
 
         Family f = (Family) obj;
-
-        return f.getId() == ((Family) obj).getId();
+        return getId() == f.getId();
     }
 }

@@ -23,7 +23,6 @@ public class LifeForm extends Category implements Listable {
         }
 
         LifeForm lf = (LifeForm) obj;
-
-        return lf.getId() == ((LifeForm) obj).getId();
+        return getId() == lf.getId();
     }
 }

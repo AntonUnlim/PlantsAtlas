@@ -24,6 +24,6 @@ public class EndangeredList extends Category implements Listable {
 
         EndangeredList el = (EndangeredList) obj;
 
-        return el.getId() == ((EndangeredList) obj).getId();
+        return getId() == el.getId();
     }
 }

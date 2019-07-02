@@ -33,6 +33,7 @@ import com.unlim.plantsatlas.main.Value;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 public class PlantNotFullListActivity extends AppCompatActivity {
@@ -57,6 +58,7 @@ public class PlantNotFullListActivity extends AppCompatActivity {
         addTextWatcher();
 
         listOfPlants = Database.getNotFullPlants();
+        Collections.sort(listOfPlants, Plant.sortByRusName());
         adapterText = new ListViewAdapterWithFilter(this, listOfPlants);
         adapterImage = new ListViewAdapterImageWithTitle(this, listOfPlants);
 

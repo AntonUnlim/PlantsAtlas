@@ -51,6 +51,6 @@ public class FlowerColor implements Serializable, Listable {
 
         FlowerColor fc = (FlowerColor) obj;
 
-        return fc.getId() == ((FlowerColor) obj).getId();
+        return getId() == fc.getId();
     }
 }

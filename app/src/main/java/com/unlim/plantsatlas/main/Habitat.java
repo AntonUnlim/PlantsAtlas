@@ -21,7 +21,7 @@ public class Habitat extends Category implements Listable {
             return false;
         }
         Habitat h = (Habitat) obj;
-        return h.getId() == ((Habitat) obj).getId();
+        return getId() == h.getId();
     }
 
     @Override

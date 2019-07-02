@@ -244,7 +244,7 @@ public class Plant implements Cloneable, Serializable, Listable {
     }
 
     public boolean hasValue(Value value) {
-        if(getValues() == null) return false;
+        //if(getValues() == null) return false;
         return getValues().contains(value);
     }
 

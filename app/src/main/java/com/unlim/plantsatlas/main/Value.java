@@ -17,11 +17,12 @@ public class Value extends Category implements Listable {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof Value)) {
+        if (obj == null || obj.getClass() != this.getClass()) {
             return false;
         }
+
         Value v = (Value) obj;
-        return v.getId() == ((Value) obj).getId();
+        return getId() == v.getId();
     }
 
     @Override
