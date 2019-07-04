@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -28,6 +29,7 @@ import com.unlim.plantsatlas.main.Value;
 import com.unlim.plantsatlas.main.YesNo;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -54,6 +56,7 @@ public class SearchActivity extends AppCompatActivity {
         fillSpinners();
         btnSearch.setOnClickListener(onSearchButtonClickListener());
         searchListView.setOnItemClickListener(onItemClickListener());
+        searchString.requestFocus();
     }
 
     private void fillSpinners() {
@@ -102,7 +105,7 @@ public class SearchActivity extends AppCompatActivity {
                 adapter = new ListViewAdapterWithFilter(SearchActivity.this, plants);
                 searchListView.setAdapter(adapter);
                 InputMethodManager inputMethodManager = (InputMethodManager)SearchActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(SearchActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                inputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(SearchActivity.this.getCurrentFocus()).getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 textViewFoundAmount.setText(Const.getPlantsAmountString(plants.size()));
             }
         };
